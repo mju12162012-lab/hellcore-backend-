@@ -1,1 +1,464 @@
+d /path/to/your/backend-folder                      <
+/system/bin/sh: cd: /path/to/your/backend-folder: No such file or directory
+kdir -p hellcore-backend                            <
+d hellcore-backend                                  <
+:/data/data/com.csgroup.terminal/files/hellcore-backend $
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ find / -name "server.js" 2>/dev/null
+1|:/data/data/com.csgroup.terminal/files/hellcore-backend $
+1|:/data/data/com.csgroup.terminal/files/hellcore-backend $ cd /path/to/your/backend-folder
+/system/bin/sh: cd: /path/to/your/backend-folder: No such file or directory
+2|:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat << 'EOF' > server.js
+> const express = require('express');
+> const cors = require('cors');
+> const Stripe = require('stripe');
+>
+Stripe with required preview API version header     <
+ Stripe(process.env.STRIPE_SECRET_KEY, {            <
+>   apiVersion: '2026-02-25.preview',
+> });
+>
+> const app = express();
+> const PORT = process.env.PORT || 3000;
+>
+> // Enable CORS for your Netlify frontend
+> app.use(cors());
+>
+se express.raw for signature verification           <
+ 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error(`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+g(`yment successful for session
+ccessful for session ID: ${session.id}`);           <
+>   }
+>
+>   res.status(200).json({ received: true });
+> });
+>
+ MIDDLEWARE: For standard API routes                <
+> app.use(express.json());
+>
+> // Checkout Session Endpoint (Managed Payments)
+ate-checkout-session', async (req, res) => {        <
+>   try {
+>     const { priceId } = req.body;
+>
+ion = await stripe.checkout.sessions.create({       <
+>       payment_method_types: ['card'],
+ms: [{ price: priceId, quantity: 1 }],              <
+>       mode: 'payment',
+>       managed_payments: { enabled: true },
+ttps://your-site.netlify.app'}/?success=true`,      <
+tps://your-site.netlify.app'}/?canceled=true`,      <
+>     });
+>
+>     res.json({ url: session.url });
+>   } catch (error) {
+>     console.error('
+
+
+
+
+
+` HELLCORE Backend running on port ${PORT}`);       <
+> });
+> EOF
+:/data/data/com.csgroup.terminal/files/hellcore-backend $
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat << 'EOF' > package.json
+> {
+>   "name": "hellcore-backend",
+>   "version": "1.0.0",
+>   "main": "server.js",
+>   "scripts": {
+>     "start": "node server.js"
+>   },
+>   "dependencies": {
+>     "cors": "^2.8.5",
+>     "express": "^4.19.2",
+>     "stripe": "^15.0.0"
+>   }
+> }
+> EOF
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ git init
+/system/bin/sh: git: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-backend $ git add .
+/system/bin/sh: git: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-baORE backend server and package config"              <
+/system/bin/sh: git: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-backend $ git branch -M main
+/system/bin/sh: git: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-batps://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git   <
+/system/bin/sh: git: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-backend $ git push -u origin main
+/system/bin/sh: git: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-backend $ pkg install git
+/system/bin/sh: pkg: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat << 'EOF' > server.js
+> const express = require('express');
+> const cors = require('cors');
+> const Stripe = require('stripe');
+>
+ Stripe(process.env.STRIPE_SECRET_KEY, {            <
+>   apiVersion: '2026-02-25.preview',
+> });
+>
+> const app = express();
+> const PORT = process.env.PORT || 3000;
+>
+> app.use(cors());
+>
+aw({ type: 'application/json' }), (req, res) => {   <
+>   const sig = req.headers['stripe-signature'];
+>   let event;
+>
+>   try {
+>     event = stripe.webhooks.constructEvent(
+>       req.body,
+>       sig,
+>       process.env.STRIPE_WEBHOOK_SECRET
+>     );
+>   } catch (err) {
+>     console.error(`
+
+
+
+
+
+
+g(`yment successful: ${session.
+ Payment successful: ${session.id}`);          <
+>   }
+>
+>   res.status(200).json({ received: true });
+> });
+>
+> app.use(express.json());
+>
+ate-checkout-session', async (req, res) => {        <
+>   try {
+>     const { priceId } = req.body;
+ion = await stripe.checkout.sessions.create({       <
+>       payment_method_types: ['card'],
+ms: [{ price: priceId, quantity: 1 }],              <
+>       mode: 'payment',
+>       managed_payments: { enabled: true },
+ttps://your-site.netlify.app'}/?success=true`,      <
+tps://your-site.netlify.app'}/?canceled=true`,      <
+>     });
+>     res.json({ url: session.url });
+>   } catch (error) {
+>     console.error('
+
+
+
+
+
+` HELLCORE Backend running on port ${PORT}`);       <
+> });
+> EOF
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat server.js
+const express = require('express');
+const cors = require('cors');
+const Stripe = require('stripe');
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY, {  apiVersion: '2026-02-25.preview',
+});
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error(`
+
+
+
+
+
+
+ Payment successful: ${session.id}`);
+  }
+
+  res.status(200).json({ received: true });
+});
+
+app.use(express.json());
+
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const { priceId } = req.body;
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      managed_payments: { enabled: true },
+      success_url: `${req.headers.origin || 'https://your-site.netlify.app'}/?success=true`,
+      cancel_url: `${req.headers.origin || 'https://your-site.netlify.app'}/?canceled=true`,
+    });
+    res.json({ url: session.url });
+  } catch (error) {
+    console.error('
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+onst app = express();
+> const PORT = process.env.PORT || 3000;
+>
+> app.use(cors());
+>
+aw({ type: 'application/json' }), (req, res) => {   <
+>   const sig = req.headers['stripe-signature'];
+>   let event;
+>
+>   try {
+>     event = stripe.webhooks.constructEvent(
+>       req.body,
+>       sig,
+>       process.env.STRIPE_WEBHOOK_SECRET
+>     );
+>   } catch (err) {
+>     console.error(`
+
+
+
+
+
+
+g(`yment successful: ${session.
+ Payment successful: ${session.id}`);          <
+>   }
+>
+>   res.status(200).json({ received: true });
+> });
+>
+> app.use(express.json());
+>
+ate-checkout-session', async (req, res) => {        <
+>   try {
+>     const { priceId } = req.body;
+ion = await stripe.checkout.sessions.create({       <
+>       payment_method_types: ['card'],
+ms: [{ price: priceId, quantity: 1 }],              <
+>       mode: 'payment',
+>       managed_payments: { enabled: true },
+ttps://your-site.netlify.app'}/?success=true`,      <
+tps://your-site.netlify.app'}/?canceled=true`,      <
+>     });
+>     res.json({ url: session.url });
+>   } catch (error) {
+>     console.error('
+
+
+
+
+
+` HELLCORE Backend running on port ${PORT}`);       <
+> });
+> EOF
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat server.js
+const express = require('express');
+const cors = require('cors');
+const Stripe = require('stripe');
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY, {  apiVersion: '2026-02-25.preview',
+});
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error(`
+
+
+
+
+
+
+ Payment successful: ${session.id}`);
+  }
+
+  res.status(200).json({ received: true });
+});
+
+app.use(express.json());
+
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const { priceId } = req.body;
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      managed_payments: { enabled: true },
+      success_url: `${req.headers.origin || 'https://your-site.netlify.app'}/?success=true`,
+      cancel_url: `${req.headers.origin || 'https://your-site.netlify.app'}/?canceled=true`,
+    });
+    res.json({ url: session.url });
+  } catch (error) {
+    console.error('
+
+
+
+
+
+
+
+kend running on port ' + PORT));\n" > server.js     <
+:/data/data/com.csgroup.terminal/files/hellcore-backend $
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat server.js
+const express = require('express');
+const cors = require('cors');
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-02-25.preview' });
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(cors());
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    return res.status(400).send('Webhook Error: ' + err.message);
+  }
+  if (event.type === 'checkout.session.completed') {
+    console.log('Payment successful: ' + event.data.object.id);
+  }
+  res.status(200).json({ received: true });
+});
+app.use(express.json());
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{ price: req.body.priceId, quantity: 1 }],
+      mode: 'payment',
+      managed_payments: { enabled: true },
+      success_url: (req.headers.origin || 'https://your-site.netlify.app') + '/?success=true',
+      cancel_url: (req.headers.origin || 'https://your-site.netlify.app') + '/?canceled=true'
+    });
+    res.json({ url: session.url });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.listen(PORT, () => console.log('Backend running on port ' + PORT));
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ gitignore
+/system/bin/sh: gitignore: inaccessible or not found
+127|:/data/data/com.csgroup.terminal/files/hellcore-banode_modules/\n.env\n.DS_Store\n" > .gitignore      <
+:/data/data/com.csgroup.terminal/files/hellcore-backend $
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat server.js
+const express = require('express');
+const cors = require('cors');
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-02-25.preview' });
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(cors());
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    return res.status(400).send('Webhook Error: ' + err.message);
+  }
+  if (event.type === 'checkout.session.completed') {
+    console.log('Payment successful: ' + event.data.object.id);
+  }
+  res.status(200).json({ received: true });
+});
+app.use(express.json());
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{ price: req.body.priceId, quantity: 1 }],
+      mode: 'payment',
+      managed_payments: { enabled: true },
+      success_url: (req.headers.origin || 'https://your-site.netlify.app') + '/?success=true',
+      cancel_url: (req.headers.origin || 'https://your-site.netlify.app') + '/?canceled=true'
+    });
+    res.json({ url: session.url });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.listen(PORT, () => console.log('Backend running on port ' + PORT));
+:/data/data/com.csgroup.terminal/files/hellcore-backend $ cat package.json
+{
+  "name": "hellcore-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "stripe": "^15.0.0"
+  }
+}
 
